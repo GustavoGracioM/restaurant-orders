@@ -31,13 +31,15 @@ def infos_client(list_request, name_person):
 
 
 def infos_requests(list_request: list):
-    requests = set()
-    days = set()
+    requests = {}
+    days = {}
     for _, request, day in list_request:
         if request not in requests:
-            requests.add(request)
+            requests[request] = 0
         if day not in days:
-            days.add(day)
+            days[day] = 0
+        requests[request] += 1
+        days[day] += 1
     return [requests, days]
 
 
@@ -49,6 +51,19 @@ def get_max(list_request: list):
             max_name = key
             max_value = list_request[key]
     return (max_name, max_value)
+
+
+def get_min(list_request: list):
+    min_value = False
+    min_name = ""
+    for key in list_request:
+        if not min_value:
+            print(list_request)
+            min_value = list_request[key]
+        elif list_request[key] < min_value:
+            min_name = key
+            min_value = list_request[key]
+    return (min_name, min_value)
 
 
 def write_analyze_lg(logs):
@@ -65,10 +80,9 @@ def analyze_log(path_to_file):
     product_arnaldo, _ = infos_client(request, "arnaldo")
     product_joao, days_joao = infos_client(request, "joao")
     logs.append(get_max(product_maria)[0])
-    logs.append(product_arnaldo['hamburguer'])
-    logs.append(set(product_joao.keys()).symmetric_difference(products))
-    logs.append(set(days_joao.keys()).symmetric_difference(days))
+    logs.append(product_arnaldo["hamburguer"])
+    logs.append(
+        set(product_joao.keys()).symmetric_difference(set(products.keys()))
+    )
+    logs.append(set(days_joao.keys()).symmetric_difference(set(days.keys)))
     write_analyze_lg(logs)
-
-
-print(analyze_log("data/orders_1.csv"))
