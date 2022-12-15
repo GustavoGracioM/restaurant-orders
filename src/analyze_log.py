@@ -84,5 +84,5 @@ def analyze_log(path_to_file):
     logs.append(
         set(product_joao.keys()).symmetric_difference(set(products.keys()))
     )
-    logs.append(set(days_joao.keys()).symmetric_difference(set(days.keys)))
+    logs.append(set(days_joao.keys()).symmetric_difference(set(days.keys())))
     write_analyze_lg(logs)
